@@ -41,8 +41,30 @@ let verificarTokenAdmin = (req, res, next) => {
     next();
 }
 
+// ======================
+// Verificar token Img
+// ======================
+
+let verificarTokenImg = (req, res, next) => {
+    let { token } = req.query
+    
+    jwt.verify(token, process.env.SEED, (err, decode) => {
+        
+        if(err){
+            return res.status(401).json({
+                ok: false,
+                err
+            });
+        }
+
+        req.usuario = decode.usuario;
+        next();
+
+    });
+}
 
 module.exports = {
     verificarToken,
-    verificarTokenAdmin
+    verificarTokenAdmin,
+    verificarTokenImg
 };
